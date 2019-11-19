@@ -8,6 +8,9 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+const adminRouters = require('./routes/admin')
+const shopRouters = require('./routes/shop')
+
 
 app.use(bodyParser.urlencoded({
 	extended: false   //是否处理非标准的请求
@@ -28,29 +31,32 @@ app.use('/my',(req,res,next) => {
 })
 
 
-app.use('/add-product',(req,res,next) => {
-	res.send('<form action="/product" method="POST"><input type="text" name="title"></input> <button tpye="submit">添加产品</button></form>')
+app.use(adminRouters)
+// app.use('/add-product',(req,res,next) => {
+// 	res.send('<form action="/product" method="POST"><input type="text" name="title"></input> <button tpye="submit">添加产品</button></form>')
 
-	// next();	
-})
-
-
-// app.get('/product',(req,res,next) => {   //get方法，  则只检测get请求
-// app.post('/product',(req,res,next) => {   //改成post方法  则只检测post请求
-
-app.use('/product',(req,res,next) => {
-	console.log(req.body)    //引入bodyParser后  这里能拿到body数据了
-	res.redirect("/")   //重定向
-	// next();	
-})
+// 	// next();	
+// })
 
 
-app.use((req,res,next) => {
-	console.log('在另一个中间件中...')	
-	res.send('<h1>3333</h1>')
-	next();	
+// // app.get('/product',(req,res,next) => {   //get方法，  则只检测get请求
+// // app.post('/product',(req,res,next) => {   //改成post方法  则只检测post请求
 
-})
+// app.use('/product',(req,res,next) => {
+// 	console.log(req.body)    //引入bodyParser后  这里能拿到body数据了
+// 	res.redirect("/")   //重定向
+// 	// next();	
+// })
+
+
+app.use(shopRouters)
+
+// app.use('/',(req,res,next) => {
+// 	console.log('在另一个中间件中...')	
+// 	res.send('<h1>3333</h1>')
+// 	next();	
+
+// })
 
 
 
