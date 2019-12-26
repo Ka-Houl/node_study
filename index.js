@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+//----->
 /**引入数据库 */
 const db = require("./utils/database");
 
@@ -27,6 +28,30 @@ db.execute("SELECT * FROM products")
   })
   .catch(err => console.log(err));
 
+//------>
+const sequelize = require("./utils/sequelize");
+
+// console.log("sequelize---------", sequelize);
+
+// //---------->使用mongodb
+// const mongoConnect = require("./utils/mongodb");
+
+// mongoConnect(client => {
+//   // console.log("client----------", client);
+//   app.listen(3000);
+// });
+
+//---------->使用mongodb2
+const mongoConnect = require("./utils/mongodb2").mongoConnect;
+const getDb = require("./utils/mongodb2").getDb;
+
+mongoConnect(client => {
+  console.log("getDb----------", getDb);
+  app.listen(3000);
+});
+
+//---------------------------------
+
 const adminRouters = require("./routes/admin");
 const shopRouters = require("./routes/shop");
 
@@ -37,7 +62,7 @@ app.use(
 ); ///引入这个  可以自动执行中间件
 
 app.use("/home", (req, res, next) => {
-  console.log("在中间件中1...");
+  // console.log("在中间件中1...");
   // console.log(db)
   res.send('<h1 style="color: red; margin-left: 20px">11111111</h1>');
 
@@ -45,7 +70,7 @@ app.use("/home", (req, res, next) => {
 });
 
 app.use("/my", (req, res, next) => {
-  console.log("在中间件中1...");
+  // console.log("在中间件中1...");
   res.send('<h1 style="color: orange; margin-left: 20px">2222</h1>');
 
   // next();
@@ -77,4 +102,4 @@ app.use(shopRouters);
 // })
 
 const server = http.createServer(app);
-server.listen(3000); //==>app.use(3000)
+// server.listen(3000); //==>app.use(3000)
